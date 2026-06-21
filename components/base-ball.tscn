@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://xe21bb6ep5k3"]
+
+[ext_resource type="Script" uid="uid://bq0welvug7m22" path="res://scripts/base_ball.gd" id="1_262jx"]
+[ext_resource type="Script" uid="uid://cbip4twlt1t63" path="res://scripts/draw_circle.gd" id="1_ag5g8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_262jx"]
+radius = 25.0
+
+[node name="Ball" type="RigidBody2D" unique_id=495019076 node_paths=PackedStringArray("base_draw_component", "collider")]
+freeze = true
+script = ExtResource("1_262jx")
+base_draw_component = NodePath("base_draw_component")
+collider = NodePath("CollisionShape2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=259859176]
+shape = SubResource("CircleShape2D_262jx")
+
+[node name="base_draw_component" type="Node2D" parent="." unique_id=568890746]
+script = ExtResource("1_ag5g8")
+radius = 25
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

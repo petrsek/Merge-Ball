@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://u5w4oxwc6ggi"]
+
+[ext_resource type="Script" uid="uid://db61y3fy84uff" path="res://scripts/ball_handler.gd" id="1_spjlh"]
+
+[node name="Node2D" type="Node2D" unique_id=1808142764]
+script = ExtResource("1_spjlh")
+
+[node name="Container" type="StaticBody2D" parent="." unique_id=1696462417]
+position = Vector2(540, 1800)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Container" unique_id=2023605968]
+polygon = PackedVector2Array(-400, 0, 400, 0, 400, -800, 350, -800, 350, -50, -350, -50, -350, -800, -400, -800)
+
+[node name="Polygon2D" type="Polygon2D" parent="Container" unique_id=1091419753]
+polygon = PackedVector2Array(-400, 0, 400, 0, 400, -800, 350, -800, 350, -50, -350, -50, -350, -800, -400, -800)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=196993435]
+offset = Vector2(540, 960)
