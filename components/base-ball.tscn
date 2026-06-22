@@ -8,12 +8,15 @@ radius = 25.0
 
 [node name="Ball" type="RigidBody2D" unique_id=495019076 node_paths=PackedStringArray("base_draw_component", "collider")]
 freeze = true
+contact_monitor = true
+max_contacts_reported = 32
 script = ExtResource("1_262jx")
 base_draw_component = NodePath("base_draw_component")
 collider = NodePath("CollisionShape2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=259859176]
 shape = SubResource("CircleShape2D_262jx")
+disabled = true
 
 [node name="base_draw_component" type="Node2D" parent="." unique_id=568890746]
 script = ExtResource("1_ag5g8")

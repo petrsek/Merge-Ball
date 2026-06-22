@@ -1,6 +1,11 @@
 [gd_scene format=3 uid="uid://u5w4oxwc6ggi"]
 
 [ext_resource type="Script" uid="uid://db61y3fy84uff" path="res://scripts/ball_handler.gd" id="1_spjlh"]
+[ext_resource type="Script" uid="uid://hsim6v8gry5r" path="res://scripts/bottom_border.gd" id="2_7cy05"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_7cy05"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_q2b0o"]
 
 [node name="Node2D" type="Node2D" unique_id=1808142764]
 script = ExtResource("1_spjlh")
@@ -8,11 +13,26 @@ script = ExtResource("1_spjlh")
 [node name="Container" type="StaticBody2D" parent="." unique_id=1696462417]
 position = Vector2(540, 1800)
 
+[node name="ContainerTopArea" type="Area2D" parent="Container" unique_id=639831166]
+position = Vector2(0, -1000)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Container/ContainerTopArea" unique_id=737613253]
+shape = SubResource("WorldBoundaryShape2D_7cy05")
+
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Container" unique_id=2023605968]
-polygon = PackedVector2Array(-400, 0, 400, 0, 400, -800, 350, -800, 350, -50, -350, -50, -350, -800, -400, -800)
+polygon = PackedVector2Array(-400, 0, 400, 0, 400, -1000, 350, -1000, 350, -50, -350, -50, -350, -1000, -400, -1000)
 
 [node name="Polygon2D" type="Polygon2D" parent="Container" unique_id=1091419753]
-polygon = PackedVector2Array(-400, 0, 400, 0, 400, -800, 350, -800, 350, -50, -350, -50, -350, -800, -400, -800)
+polygon = PackedVector2Array(-400, 0, 400, 0, 400, -1000, 350, -1000, 350, -50, -350, -50, -350, -1000, -400, -1000)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=196993435]
 offset = Vector2(540, 960)
+
+[node name="BottomBorder" type="Area2D" parent="." unique_id=157230159]
+position = Vector2(0, 2920)
+script = ExtResource("2_7cy05")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomBorder" unique_id=1950182699]
+shape = SubResource("WorldBoundaryShape2D_q2b0o")
+
+[connection signal="body_entered" from="BottomBorder" to="BottomBorder" method="_on_body_entered"]

@@ -2,29 +2,41 @@ class_name Ball
 
 extends RigidBody2D
 
+signal collision_with_same_ball(ball1: Ball, ball2: Ball)
+
 @export var base_draw_component: Node2D
 @export var collider: CollisionShape2D
-
-
-@export var level: int = 1
+@export var level: int = 0
 		
 func _ready():
 	UpdateLevel()
 
-const level_dict = {
-	1:25,
-	2:50,
-	3:75,
-	4:100,
-	5:150
-}
+const level_dict = [
+	20,
+	25, 
+	35, 
+	50, 
+	65, 
+	80, 
+	100, 
+	125, 
+	150,
+	175
+	]
 
 func UpdateLevel():
-	base_draw_component.radius = level_dict[level]
+	var r = level_dict[level % level_dict.size()]
+	base_draw_component.radius = r
+	base_draw_component.level = level
 	var collider_shape = CircleShape2D.new()
-	collider_shape.radius = level_dict[level]
+	collider_shape.radius = r
 	collider.shape = collider_shape
-
+	mass = r
 
 func _on_body_entered(body):
-	pass # Replace with function body.
+	if body is Ball && self.level == body.level:
+		collision_with_same_ball.emit(self, body)
+	
+func Drop():
+	self.freeze = false
+	collider.disabled = false
