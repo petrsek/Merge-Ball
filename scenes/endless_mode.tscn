@@ -2,22 +2,37 @@
 
 [ext_resource type="Script" uid="uid://db61y3fy84uff" path="res://scripts/ball_handler.gd" id="1_spjlh"]
 [ext_resource type="Script" uid="uid://hsim6v8gry5r" path="res://scripts/bottom_border.gd" id="2_7cy05"]
+[ext_resource type="Script" uid="uid://bbitrtdh324c8" path="res://scripts/container_top_area.gd" id="2_ci4il"]
 
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_7cy05"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7cy05"]
+size = Vector2(805, 62)
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_q2b0o"]
 
-[node name="Node2D" type="Node2D" unique_id=1808142764]
+[sub_resource type="LabelSettings" id="LabelSettings_ci4il"]
+font_size = 256
+outline_size = 16
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Node2D" type="Node2D" unique_id=1808142764 node_paths=PackedStringArray("game_over_timer", "game_over_label")]
 script = ExtResource("1_spjlh")
+game_over_timer = NodePath("GameOverTimer")
+game_over_label = NodePath("CenterContainer/Label")
 
 [node name="Container" type="StaticBody2D" parent="." unique_id=1696462417]
 position = Vector2(540, 1800)
 
-[node name="ContainerTopArea" type="Area2D" parent="Container" unique_id=639831166]
+[node name="ContainerTopArea" type="Area2D" parent="Container" unique_id=639831166 node_paths=PackedStringArray("timer_to_countdown")]
 position = Vector2(0, -1000)
+script = ExtResource("2_ci4il")
+timer_to_countdown = NodePath("TimerToCountdown")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Container/ContainerTopArea" unique_id=737613253]
-shape = SubResource("WorldBoundaryShape2D_7cy05")
+position = Vector2(1.5, -33)
+shape = SubResource("RectangleShape2D_7cy05")
+
+[node name="TimerToCountdown" type="Timer" parent="Container/ContainerTopArea" unique_id=1925032193]
+process_callback = 0
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Container" unique_id=2023605968]
 polygon = PackedVector2Array(-400, 0, 400, 0, 400, -1000, 350, -1000, 350, -50, -350, -50, -350, -1000, -400, -1000)
@@ -35,4 +50,22 @@ script = ExtResource("2_7cy05")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BottomBorder" unique_id=1950182699]
 shape = SubResource("WorldBoundaryShape2D_q2b0o")
 
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=506675669]
+z_index = 1
+offset_right = 1080.0
+offset_bottom = 1920.0
+
+[node name="Label" type="Label" parent="CenterContainer" unique_id=1776129501]
+visible = false
+layout_mode = 2
+label_settings = SubResource("LabelSettings_ci4il")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GameOverTimer" type="Timer" parent="." unique_id=1555970210]
+wait_time = 5.0
+
+[connection signal="stop_countdown" from="Container/ContainerTopArea" to="." method="_on_container_top_area_stop_countdown"]
+[connection signal="timeout" from="Container/ContainerTopArea/TimerToCountdown" to="." method="_on_timer_to_countdown_timeout"]
 [connection signal="body_entered" from="BottomBorder" to="BottomBorder" method="_on_body_entered"]
+[connection signal="timeout" from="GameOverTimer" to="." method="_on_game_over_timer_timeout"]

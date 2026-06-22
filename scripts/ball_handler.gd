@@ -1,29 +1,49 @@
 extends Node2D
 
+@export var game_over_timer: Timer
+@export var game_over_label: Label
+
 @export var ball_top_offset: int = 400
 @onready var ball_scene = preload("res://components/base-ball.tscn")
 var ball: Ball
+
+var game_ending: bool = false
+var game_over: bool = false
 
 func _ready():
 	ReadyBall()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	if ball != null:
+	if !game_over and ball != null:
 		ball.global_position.x = GetMouseXPos()
+	
+	game_over_label.visible = game_ending
+	if game_ending && !game_over:
+		game_over_label.text = "%d" % ceil(game_over_timer.time_left)
+	if game_over:
+		game_over_label.label_settings.font_color = Color("red")
+		game_over_label.text = "GAME\nOVER"
 		
 func GetMouseXPos():
 	return clampf(get_global_mouse_position().x, 200, 880)
 
 	
 func _input(event):
-	if event is InputEventMouseButton:
-		if event.button_index == MouseButton.MOUSE_BUTTON_LEFT && !event.pressed: 
-			DropBall()
-	if event is InputEventScreenTouch:
-		if !event.pressed:
-			DropBall()
+	if !game_over:
+		if event is InputEventMouseButton:
+			if event.button_index == MouseButton.MOUSE_BUTTON_LEFT && !event.pressed: 
+				DropBall()
+		if event is InputEventScreenTouch:
+			if !event.pressed:
+				DropBall()
+	else:
+		if event.is_pressed():
+			RestartScene()
 			
+func RestartScene():
+	get_tree().reload_current_scene()
+
 func DropBall():
 	if ball == null:
 		return
@@ -41,7 +61,7 @@ func ReadyBall():
 	var glob_pos = Vector2(GetMouseXPos(), ball_top_offset)
 	var new_ball = CreateBall(glob_pos, level)
 	ball = new_ball
-	self.add_sibling.call_deferred(ball)
+	self.add_child.call_deferred(ball)
 		
 func CreateBall(glob_pos: Vector2, level: int):
 	var new_ball: Ball = ball_scene.instantiate()
@@ -61,7 +81,7 @@ func _on_same_ball_collision(ball1: Ball, ball2: Ball):
 	ball2.queue_free()
 	var new_ball = CreateBall(pos, level)
 	new_ball.Drop()
-	self.add_sibling.call_deferred(new_ball)
+	self.add_child.call_deferred(new_ball)
 	
 func GetNextLevel():
 	var rand = randf()
@@ -71,3 +91,19 @@ func GetNextLevel():
 			level = i - 1
 			break
 	return level
+
+
+func _on_timer_to_countdown_timeout() -> void:
+	if game_ending:
+		return
+	game_over_timer.start()
+	game_ending = true
+
+
+func _on_container_top_area_stop_countdown() -> void:
+	game_over_timer.stop()
+	game_ending = false
+
+
+func _on_game_over_timer_timeout() -> void:
+	game_over = true
