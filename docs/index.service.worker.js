@@ -4,7 +4,7 @@
 // Incrementing CACHE_VERSION will kick off the install event and force
 // previously cached resources to be updated from the network.
 /** @type {string} */
-const CACHE_VERSION = '1782758650|2993006162';
+const CACHE_VERSION = '1782762075|57299790';
 /** @type {string} */
 const CACHE_PREFIX = 'Merge Ball-sw-cache-';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
