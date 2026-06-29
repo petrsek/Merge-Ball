@@ -10,6 +10,8 @@ var ball: Ball
 var game_ending: bool = false
 var game_over: bool = false
 
+var should_drop: bool = false
+
 func _ready():
 	ReadyBall()
 
@@ -17,6 +19,9 @@ func _ready():
 func _process(_delta):
 	if !game_over and ball != null:
 		ball.global_position.x = GetMouseXPos()
+		if should_drop:
+			DropBall()
+			should_drop = false
 	
 	game_over_label.visible = game_ending
 	if game_ending && !game_over:
@@ -33,10 +38,10 @@ func _input(event):
 	if !game_over:
 		if event is InputEventMouseButton:
 			if event.button_index == MouseButton.MOUSE_BUTTON_LEFT && !event.pressed: 
-				DropBall()
+				should_drop = true
 		if event is InputEventScreenTouch:
 			if !event.pressed:
-				DropBall()
+				should_drop = true
 	else:
 		if event.is_pressed():
 			RestartScene()
