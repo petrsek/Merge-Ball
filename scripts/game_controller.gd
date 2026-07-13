@@ -45,7 +45,8 @@ func GetMouseXPos():
 
 	
 func _input(event):
-	if !game_over:
+	# also check if ball exists to prevend 2 balls from falling when doubleclicking
+	if !game_over && ball != null: 
 		if event is InputEventMouseButton:
 			if event.button_index == MouseButton.MOUSE_BUTTON_LEFT && event.pressed: 
 				should_drop = true
@@ -53,7 +54,7 @@ func _input(event):
 			# waits for release to allow for dragging to move the ball
 			if !event.pressed: 
 				should_drop = true
-	else:
+	elif game_over:
 		if event.is_pressed():
 			RestartScene()
 			
