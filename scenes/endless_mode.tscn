@@ -9,6 +9,10 @@ size = Vector2(805, 62)
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_q2b0o"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_ngx8f"]
+font_size = 32
+font_color = Color(0.7792914, 0.7792914, 0.7792913, 1)
+
 [sub_resource type="LabelSettings" id="LabelSettings_ci4il"]
 font_size = 256
 outline_size = 16
@@ -17,7 +21,7 @@ outline_color = Color(0, 0, 0, 1)
 [node name="GameController" type="Node2D" unique_id=1808142764 node_paths=PackedStringArray("game_over_timer", "game_over_label")]
 script = ExtResource("1_spjlh")
 game_over_timer = NodePath("GameOverTimer")
-game_over_label = NodePath("CenterContainer/Label")
+game_over_label = NodePath("MarginContainer/CenterContainer/GameOverLabel")
 
 [node name="Container" type="StaticBody2D" parent="." unique_id=1696462417]
 position = Vector2(540, 1800)
@@ -51,20 +55,35 @@ game_over_timer = NodePath("../GameOverTimer")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BottomBorder" unique_id=1950182699]
 shape = SubResource("WorldBoundaryShape2D_q2b0o")
 
-[node name="CenterContainer" type="CenterContainer" parent="." unique_id=506675669]
-z_index = 1
+[node name="GameOverTimer" type="Timer" parent="." unique_id=1555970210]
+wait_time = 5.0
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=807126287]
 offset_right = 1080.0
 offset_bottom = 1920.0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
 
-[node name="Label" type="Label" parent="CenterContainer" unique_id=1776129501]
+[node name="VersionLabel" type="Label" parent="MarginContainer" unique_id=639543576]
+layout_mode = 2
+size_flags_vertical = 1
+text = "v0.0.2"
+label_settings = SubResource("LabelSettings_ngx8f")
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer" unique_id=506675669]
+z_index = 1
+layout_mode = 2
+
+[node name="GameOverLabel" type="Label" parent="MarginContainer/CenterContainer" unique_id=1776129501]
 visible = false
 layout_mode = 2
 label_settings = SubResource("LabelSettings_ci4il")
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="GameOverTimer" type="Timer" parent="." unique_id=1555970210]
-wait_time = 5.0
 
 [connection signal="stop_countdown" from="Container/ContainerTopArea" to="." method="_on_container_top_area_stop_countdown"]
 [connection signal="timeout" from="Container/ContainerTopArea/TimerToCountdown" to="." method="_on_timer_to_countdown_timeout"]
