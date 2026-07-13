@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://u5w4oxwc6ggi"]
 
-[ext_resource type="Script" uid="uid://db61y3fy84uff" path="res://scripts/ball_handler.gd" id="1_spjlh"]
+[ext_resource type="Script" uid="uid://db61y3fy84uff" path="res://scripts/game_controller.gd" id="1_spjlh"]
 [ext_resource type="Script" uid="uid://hsim6v8gry5r" path="res://scripts/bottom_border.gd" id="2_7cy05"]
 [ext_resource type="Script" uid="uid://bbitrtdh324c8" path="res://scripts/container_top_area.gd" id="2_ci4il"]
 
@@ -14,7 +14,7 @@ font_size = 256
 outline_size = 16
 outline_color = Color(0, 0, 0, 1)
 
-[node name="Node2D" type="Node2D" unique_id=1808142764 node_paths=PackedStringArray("game_over_timer", "game_over_label")]
+[node name="GameController" type="Node2D" unique_id=1808142764 node_paths=PackedStringArray("game_over_timer", "game_over_label")]
 script = ExtResource("1_spjlh")
 game_over_timer = NodePath("GameOverTimer")
 game_over_label = NodePath("CenterContainer/Label")
@@ -43,9 +43,10 @@ polygon = PackedVector2Array(-400, 0, 400, 0, 400, -1000, 350, -1000, 350, -50, 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=196993435]
 offset = Vector2(540, 960)
 
-[node name="BottomBorder" type="Area2D" parent="." unique_id=157230159]
+[node name="BottomBorder" type="Area2D" parent="." unique_id=157230159 node_paths=PackedStringArray("game_over_timer")]
 position = Vector2(0, 2920)
 script = ExtResource("2_7cy05")
+game_over_timer = NodePath("../GameOverTimer")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BottomBorder" unique_id=1950182699]
 shape = SubResource("WorldBoundaryShape2D_q2b0o")
