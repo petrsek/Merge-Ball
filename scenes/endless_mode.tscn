@@ -143,7 +143,7 @@ text = "Main Menu"
 [node name="VersionLabel" type="Label" parent="UI/VSplitContainer" unique_id=639543576]
 layout_mode = 2
 size_flags_vertical = 1
-text = "v1.0.0"
+text = "v1.0.1"
 label_settings = SubResource("LabelSettings_ngx8f")
 horizontal_alignment = 2
 vertical_alignment = 2
