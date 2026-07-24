@@ -17,16 +17,16 @@ func _ready():
 
 ## lookup table for ball radiuses based on level
 const level_dict = [
-	20,
-	25, 
-	35, 
+	40,
 	50, 
-	65, 
-	80, 
-	100, 
-	125, 
-	150,
-	175
+	60, 
+	75, 
+	90, 
+	110, 
+	130, 
+	150, 
+	175,
+	200
 	]
 
 ## Sets this ball and its components to current level

@@ -103,9 +103,13 @@ func _on_same_ball_collision(ball1: Ball, ball2: Ball):
 	new_ball.Drop() # make ball interact with environment
 	self.add_child.call_deferred(new_ball)
 
+#var lvl = -1
 ## Returns randomly generated balue beween 0 and 4. 
 ## The pobability function follow a hyperbolic curve
 func GetNextLevel():
+	#lvl += 1
+	#return (lvl % Ball.level_dict.size())
+	
 	var rand = randf()
 	var level: int = 4
 	for i in range(1, 6):
