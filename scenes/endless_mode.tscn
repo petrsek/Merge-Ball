@@ -3,25 +3,30 @@
 [ext_resource type="Script" uid="uid://db61y3fy84uff" path="res://scripts/game_controller.gd" id="1_spjlh"]
 [ext_resource type="Script" uid="uid://hsim6v8gry5r" path="res://scripts/bottom_border.gd" id="2_7cy05"]
 [ext_resource type="Script" uid="uid://bbitrtdh324c8" path="res://scripts/container_top_area.gd" id="2_ci4il"]
+[ext_resource type="Script" uid="uid://b71y8qv02ldqc" path="res://scripts/score_label.gd" id="4_ngx8f"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7cy05"]
 size = Vector2(805, 62)
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_q2b0o"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_ngx8f"]
-font_size = 32
-font_color = Color(0.7792914, 0.7792914, 0.7792913, 1)
+[sub_resource type="LabelSettings" id="LabelSettings_xc8o4"]
+font_size = 64
 
 [sub_resource type="LabelSettings" id="LabelSettings_ci4il"]
 font_size = 256
 outline_size = 16
 outline_color = Color(0, 0, 0, 1)
 
-[node name="GameController" type="Node2D" unique_id=1808142764 node_paths=PackedStringArray("game_over_timer", "game_over_label")]
+[sub_resource type="LabelSettings" id="LabelSettings_ngx8f"]
+font_size = 32
+font_color = Color(0.7792914, 0.7792914, 0.7792913, 1)
+
+[node name="GameController" type="Node2D" unique_id=1808142764 node_paths=PackedStringArray("game_over_timer", "game_over_label", "restart_button")]
 script = ExtResource("1_spjlh")
 game_over_timer = NodePath("GameOverTimer")
-game_over_label = NodePath("MarginContainer/CenterContainer/GameOverLabel")
+game_over_label = NodePath("UI/VSplitContainer/CenterContainer/VBoxContainer/GameOverLabel")
+restart_button = NodePath("UI/VSplitContainer/CenterContainer/VBoxContainer/RestartButton")
 
 [node name="Container" type="StaticBody2D" parent="." unique_id=1696462417]
 position = Vector2(540, 1800)
@@ -58,7 +63,7 @@ shape = SubResource("WorldBoundaryShape2D_q2b0o")
 [node name="GameOverTimer" type="Timer" parent="." unique_id=1555970210]
 wait_time = 5.0
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=807126287]
+[node name="UI" type="MarginContainer" parent="." unique_id=807126287]
 offset_right = 1080.0
 offset_bottom = 1920.0
 theme_override_constants/margin_left = 16
@@ -66,26 +71,53 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="VersionLabel" type="Label" parent="MarginContainer" unique_id=639543576]
+[node name="VSplitContainer" type="VSplitContainer" parent="UI" unique_id=1618056720]
 layout_mode = 2
-size_flags_vertical = 1
-text = "v0.0.2"
-label_settings = SubResource("LabelSettings_ngx8f")
-horizontal_alignment = 2
-vertical_alignment = 2
+split_offsets = PackedInt32Array(88, 1831)
+drag_area_highlight_in_editor = true
+split_offset = 88
 
-[node name="CenterContainer" type="CenterContainer" parent="MarginContainer" unique_id=506675669]
-z_index = 1
+[node name="ScoreLabel" type="Label" parent="UI/VSplitContainer" unique_id=1330706825 node_paths=PackedStringArray("score_mult_timer")]
+layout_mode = 2
+label_settings = SubResource("LabelSettings_xc8o4")
+script = ExtResource("4_ngx8f")
+score_mult_timer = NodePath("ScoreMultTimer")
+
+[node name="ScoreMultTimer" type="Timer" parent="UI/VSplitContainer/ScoreLabel" unique_id=845855759]
+wait_time = 0.5
+
+[node name="CenterContainer" type="CenterContainer" parent="UI/VSplitContainer" unique_id=1004109638]
 layout_mode = 2
 
-[node name="GameOverLabel" type="Label" parent="MarginContainer/CenterContainer" unique_id=1776129501]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/VSplitContainer/CenterContainer" unique_id=411421290]
+layout_mode = 2
+
+[node name="GameOverLabel" type="Label" parent="UI/VSplitContainer/CenterContainer/VBoxContainer" unique_id=1776129501]
 visible = false
 layout_mode = 2
 label_settings = SubResource("LabelSettings_ci4il")
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="RestartButton" type="Button" parent="UI/VSplitContainer/CenterContainer/VBoxContainer" unique_id=2111770367]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+button_mask = 3
+text = "Restart"
+
+[node name="VersionLabel" type="Label" parent="UI/VSplitContainer" unique_id=639543576]
+layout_mode = 2
+size_flags_vertical = 1
+text = "v1.0.0"
+label_settings = SubResource("LabelSettings_ngx8f")
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[connection signal="balls_merged" from="." to="UI/VSplitContainer/ScoreLabel" method="_on_balls_merged"]
 [connection signal="stop_countdown" from="Container/ContainerTopArea" to="." method="_on_container_top_area_stop_countdown"]
 [connection signal="timeout" from="Container/ContainerTopArea/TimerToCountdown" to="." method="_on_timer_to_countdown_timeout"]
 [connection signal="body_entered" from="BottomBorder" to="BottomBorder" method="_on_body_entered"]
 [connection signal="timeout" from="GameOverTimer" to="." method="_on_game_over_timer_timeout"]
+[connection signal="timeout" from="UI/VSplitContainer/ScoreLabel/ScoreMultTimer" to="UI/VSplitContainer/ScoreLabel" method="_on_score_mult_timer_timeout"]
+[connection signal="pressed" from="UI/VSplitContainer/CenterContainer/VBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]

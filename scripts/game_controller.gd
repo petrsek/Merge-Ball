@@ -6,6 +6,7 @@ extends Node2D
 
 @export var game_over_timer: Timer ## [Timer] for game over countdown
 @export var game_over_label: Label ## [Label] for game over text
+@export var restart_button: Button ## [Button] which is pressed to reset scene
 
 @export var ball_top_offset: int = 400 ## height (from top) of the ball before dropping
 @onready var ball_scene = preload("res://components/base-ball.tscn") ## Base ball scene (level 0)
@@ -18,6 +19,10 @@ var should_drop: bool = false ## indicates whether the player has pressed a butt
 
 @export var ball_min_x: int = 200 ## min global_position.x new ball will move to
 @export var ball_max_x: int = 880 ## max global_position.x new ball will move to
+
+## Emitted when 2 balls are merged [br][br]
+## [param new_level] is the level of merged balls
+signal balls_merged(level: int) 
 
 func _ready():
 	ReadyBall()
@@ -33,6 +38,7 @@ func _process(_delta):
 	
 	# show countdown and game over
 	game_over_label.visible = game_ending
+	restart_button.visible = game_over
 	if game_ending && !game_over:
 		game_over_label.text = "%d" % ceil(game_over_timer.time_left)
 	if game_over:
@@ -54,9 +60,6 @@ func _input(event):
 			# waits for release to allow for dragging to move the ball
 			if !event.pressed: 
 				should_drop = true
-	elif game_over:
-		if event.is_pressed():
-			RestartScene()
 			
 ## Reloads current scene
 func RestartScene():
@@ -95,6 +98,7 @@ func _on_same_ball_collision(ball1: Ball, ball2: Ball):
 	# check if already handled
 	if ball1.is_queued_for_deletion() || ball2.is_queued_for_deletion():
 		return
+	balls_merged.emit(ball1.level)
 	var pos = (ball1.global_position + ball2.global_position) / 2
 	var level = (ball1.level + 1)
 	ball1.queue_free()
@@ -133,7 +137,12 @@ func _on_container_top_area_stop_countdown() -> void:
 		game_over_timer.stop()
 	game_ending = false
 
-## Ends game
+## Ends game [br]
 ## Called on [member GameController.game_over_timer].timeout
 func _on_game_over_timer_timeout() -> void:
 	game_over = true
+
+## Restarts game [br]
+## Called when Restart[Button] is pressed
+func _on_restart_button_pressed() -> void:
+	RestartScene()
