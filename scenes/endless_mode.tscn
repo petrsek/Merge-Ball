@@ -65,6 +65,7 @@ shape = SubResource("WorldBoundaryShape2D_q2b0o")
 wait_time = 5.0
 
 [node name="UI" type="MarginContainer" parent="." unique_id=807126287]
+z_index = 10
 offset_right = 1080.0
 offset_bottom = 1920.0
 theme_override_constants/margin_left = 16

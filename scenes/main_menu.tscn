@@ -46,13 +46,4 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 128
 text = "PLAY"
 
-[node name="CenterContainer" type="CenterContainer" parent="CenterContainer/VBoxContainer" unique_id=1466585763]
-layout_mode = 2
-
-[node name="ExitButton" type="Button" parent="CenterContainer/VBoxContainer/CenterContainer" unique_id=1669320869]
-layout_mode = 2
-theme_override_font_sizes/font_size = 96
-text = "EXIT"
-
 [connection signal="pressed" from="CenterContainer/VBoxContainer/MarginContainer/CenterContainer/PlayButton" to="." method="_on_play_button_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/ExitButton" to="." method="_on_exit_button_pressed"]
