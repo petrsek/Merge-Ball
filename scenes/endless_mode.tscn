@@ -22,11 +22,12 @@ outline_color = Color(0, 0, 0, 1)
 font_size = 32
 font_color = Color(0.7792914, 0.7792914, 0.7792913, 1)
 
-[node name="GameController" type="Node2D" unique_id=1808142764 node_paths=PackedStringArray("game_over_timer", "game_over_label", "restart_button")]
+[node name="GameController" type="Node2D" unique_id=1808142764 node_paths=PackedStringArray("game_over_timer", "game_over_label", "restart_button", "menu_button")]
 script = ExtResource("1_spjlh")
 game_over_timer = NodePath("GameOverTimer")
 game_over_label = NodePath("UI/VSplitContainer/CenterContainer/VBoxContainer/GameOverLabel")
-restart_button = NodePath("UI/VSplitContainer/CenterContainer/VBoxContainer/RestartButton")
+restart_button = NodePath("UI/VSplitContainer/CenterContainer/VBoxContainer/MarginContainer/RestartButton")
+menu_button = NodePath("UI/VSplitContainer/CenterContainer/VBoxContainer/BackToMenuButton")
 
 [node name="Container" type="StaticBody2D" parent="." unique_id=1696462417]
 position = Vector2(540, 1800)
@@ -108,12 +109,24 @@ label_settings = SubResource("LabelSettings_ci4il")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RestartButton" type="Button" parent="UI/VSplitContainer/CenterContainer/VBoxContainer" unique_id=2111770367]
+[node name="MarginContainer" type="MarginContainer" parent="UI/VSplitContainer/CenterContainer/VBoxContainer" unique_id=671046380]
+layout_mode = 2
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="RestartButton" type="Button" parent="UI/VSplitContainer/CenterContainer/VBoxContainer/MarginContainer" unique_id=2111770367]
 visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 64
 button_mask = 3
 text = "Restart"
+
+[node name="BackToMenuButton" type="Button" parent="UI/VSplitContainer/CenterContainer/VBoxContainer" unique_id=1710409778]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+button_mask = 3
+text = "Main Menu"
 
 [node name="VersionLabel" type="Label" parent="UI/VSplitContainer" unique_id=639543576]
 layout_mode = 2
@@ -129,4 +142,5 @@ vertical_alignment = 2
 [connection signal="body_entered" from="BottomBorder" to="BottomBorder" method="_on_body_entered"]
 [connection signal="timeout" from="GameOverTimer" to="." method="_on_game_over_timer_timeout"]
 [connection signal="timeout" from="UI/VSplitContainer/HBoxContainer/ScoreLabel/ScoreMultTimer" to="UI/VSplitContainer/HBoxContainer/ScoreLabel" method="_on_score_mult_timer_timeout"]
-[connection signal="pressed" from="UI/VSplitContainer/CenterContainer/VBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="UI/VSplitContainer/CenterContainer/VBoxContainer/MarginContainer/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="UI/VSplitContainer/CenterContainer/VBoxContainer/BackToMenuButton" to="." method="_on_back_to_menu_button_pressed"]

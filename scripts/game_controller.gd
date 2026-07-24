@@ -7,6 +7,7 @@ extends Node2D
 @export var game_over_timer: Timer ## [Timer] for game over countdown
 @export var game_over_label: Label ## [Label] for game over text
 @export var restart_button: Button ## [Button] which is pressed to reset scene
+@export var menu_button: Button ## [Button] which returns user to main menu
 
 @export var ball_top_offset: int = 400 ## height (from top) of the ball before dropping
 @onready var ball_scene = preload("res://components/base-ball.tscn") ## Base ball scene (level 0)
@@ -41,6 +42,7 @@ func _process(_delta):
 	# show countdown and game over
 	game_over_label.visible = game_ending
 	restart_button.visible = game_over
+	menu_button.visible = game_over
 	if game_ending && !game_over:
 		game_over_label.text = "%d" % ceil(game_over_timer.time_left)
 	if game_over:
@@ -157,3 +159,7 @@ func _on_game_over_timer_timeout() -> void:
 ## Called when Restart[Button] is pressed
 func _on_restart_button_pressed() -> void:
 	RestartScene()
+
+## Returns back to main menu
+func _on_back_to_menu_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
