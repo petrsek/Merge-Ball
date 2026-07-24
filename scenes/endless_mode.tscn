@@ -74,27 +74,38 @@ theme_override_constants/margin_bottom = 16
 
 [node name="VSplitContainer" type="VSplitContainer" parent="UI" unique_id=1618056720]
 layout_mode = 2
-split_offsets = PackedInt32Array(0, 1707)
+split_offsets = PackedInt32Array(88, 188, 1707)
 drag_area_highlight_in_editor = true
+split_offset = 88
 
 [node name="HBoxContainer" type="HSplitContainer" parent="UI/VSplitContainer" unique_id=2096558352]
 layout_mode = 2
-split_offsets = PackedInt32Array(735)
-split_offset = 735
+split_offsets = PackedInt32Array(768)
+split_offset = 768
 
-[node name="ScoreLabel" type="Label" parent="UI/VSplitContainer/HBoxContainer" unique_id=1330706825 node_paths=PackedStringArray("score_mult_timer")]
+[node name="MarginContainer" type="Control" parent="UI/VSplitContainer/HBoxContainer" unique_id=1858739595]
 layout_mode = 2
-label_settings = SubResource("LabelSettings_xc8o4")
-script = ExtResource("4_ngx8f")
-score_mult_timer = NodePath("ScoreMultTimer")
 
-[node name="ScoreMultTimer" type="Timer" parent="UI/VSplitContainer/HBoxContainer/ScoreLabel" unique_id=845855759]
-wait_time = 0.5
+[node name="BackButton" type="Button" parent="UI/VSplitContainer/HBoxContainer/MarginContainer" unique_id=1757279210]
+layout_mode = 0
+offset_right = 174.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 64
+text = "BACK"
 
 [node name="NextBallLabel" type="Label" parent="UI/VSplitContainer/HBoxContainer" unique_id=1337660220]
 layout_mode = 2
 theme_override_font_sizes/font_size = 64
 text = "NEXT:"
+
+[node name="ScoreLabel" type="Label" parent="UI/VSplitContainer" unique_id=1330706825 node_paths=PackedStringArray("score_mult_timer")]
+layout_mode = 2
+label_settings = SubResource("LabelSettings_xc8o4")
+script = ExtResource("4_ngx8f")
+score_mult_timer = NodePath("ScoreMultTimer")
+
+[node name="ScoreMultTimer" type="Timer" parent="UI/VSplitContainer/ScoreLabel" unique_id=845855759]
+wait_time = 0.5
 
 [node name="CenterContainer" type="CenterContainer" parent="UI/VSplitContainer" unique_id=1004109638]
 layout_mode = 2
@@ -136,11 +147,12 @@ label_settings = SubResource("LabelSettings_ngx8f")
 horizontal_alignment = 2
 vertical_alignment = 2
 
-[connection signal="balls_merged" from="." to="UI/VSplitContainer/HBoxContainer/ScoreLabel" method="_on_balls_merged"]
+[connection signal="balls_merged" from="." to="UI/VSplitContainer/ScoreLabel" method="_on_balls_merged"]
 [connection signal="stop_countdown" from="Container/ContainerTopArea" to="." method="_on_container_top_area_stop_countdown"]
 [connection signal="timeout" from="Container/ContainerTopArea/TimerToCountdown" to="." method="_on_timer_to_countdown_timeout"]
 [connection signal="body_entered" from="BottomBorder" to="BottomBorder" method="_on_body_entered"]
 [connection signal="timeout" from="GameOverTimer" to="." method="_on_game_over_timer_timeout"]
-[connection signal="timeout" from="UI/VSplitContainer/HBoxContainer/ScoreLabel/ScoreMultTimer" to="UI/VSplitContainer/HBoxContainer/ScoreLabel" method="_on_score_mult_timer_timeout"]
+[connection signal="pressed" from="UI/VSplitContainer/HBoxContainer/MarginContainer/BackButton" to="." method="_on_back_to_menu_button_pressed"]
+[connection signal="timeout" from="UI/VSplitContainer/ScoreLabel/ScoreMultTimer" to="UI/VSplitContainer/ScoreLabel" method="_on_score_mult_timer_timeout"]
 [connection signal="pressed" from="UI/VSplitContainer/CenterContainer/VBoxContainer/MarginContainer/RestartButton" to="." method="_on_restart_button_pressed"]
 [connection signal="pressed" from="UI/VSplitContainer/CenterContainer/VBoxContainer/BackToMenuButton" to="." method="_on_back_to_menu_button_pressed"]
