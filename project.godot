@@ -11,9 +11,10 @@ config_version=5
 [application]
 
 config/name="Merge Ball"
+config/description="A game where you drop balls into a container and when two identical touch, they merge into a bigger one. The goal is to get as high score as possible and most importantly have fun."
 run/main_scene="uid://c875gb5cq08wn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="uid://gnpglqjfqu1b"
 
 [display]
 
